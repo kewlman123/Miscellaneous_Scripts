@@ -1,0 +1,35 @@
+//Not sure what this does
+
+function onChange(control, oldValue, newValue, isLoading)
+  if (isLoading) 
+      return;
+ 
+  if (!g_form.isNewRecord())
+      return;
+ 
+  var lookup = new GlideRecord('short_desc_lookup'); 
+  lookup.addQuery('u_subcategory', g_form.getValue('subcategory'));
+  lookup.query();
+  var temp;  //temp var - reusable 
+    if (lookup.next()) {
+    temp = lookup.u_short_description;
+      if (null != temp){   //Set the form value from lookup if there is a lookup value
+      g_form.setValue('short_description', temp);
+      }else{
+      g_form.setValue('short_description', "");
+      }
+    }else{
+      //If a lookup record does not exist based on lookup.addQuery
+      //Then set to UNDEFINED or NULL depending on type
+    g_form.setValue('short_description', "");
+    }
+  }
+ 
+}
+ 
+----
+function onLoad() {
+   if(g_form.isNewRecord()){
+      alert('New Record!');
+   }
+}
