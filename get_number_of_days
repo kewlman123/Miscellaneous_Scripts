@@ -1,0 +1,16 @@
+// get number of days excluding weekends
+
+function getDateDifferenceExcWeekends(start , end){
+//Make Sure that start and end are GlideDateTime Objects 
+  var days = 0 ;
+  while (start < end) {
+  start.addDays(1);
+  if (start.getDayOfWeek() != 6 && start.getDayOfWeek() != 7)      //excluding Weekends
+  {
+  days++ ;
+  }
+  }
+  return days;
+}
+
+
