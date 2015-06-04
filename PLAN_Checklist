@@ -1,0 +1,19 @@
+//this ui_action creates a checklist for the plan application
+
+current.u_qa_status = 1;
+current.u_status = 'QA';
+
+var pclist = new GlideRecord('u_plan_checklist');
+
+pclist.initialize();
+pclist.u_assigned_to = gs.getUserID();
+pclist.u_parent_plan_ticket = current.sys_id;
+pclist.insert();
+
+action.setRedirectURL(current);
+current.update();
+
+gs.include("FormInfoHeader");
+var fi = new FormInfoHeader();
+var s = 'Checklist ' + pclist.u_checklist_number + ' has been created for your review';
+fi.addMessage(s);
