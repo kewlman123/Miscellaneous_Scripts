@@ -1,0 +1,111 @@
+
+
+I recently ran into a problem that I'm sure many people run into in their instances of Service Now: duplication of data. Ours was caused by an integration with an outside system, wherein the transform map was creating multiple departments of the same name for each individual user within the department in question. I'm relatively certain that there's a process in place out there to keep this from happening (we're currently in the process of setting up the Field Normalization module ourselves), but I came up with what I think is a fairly elegant solution to cleaning up a specific table without messing up the references to the individual objects. Here's my background script:
+
+ 
+
+var department = new GlideAggregate('cmn_department');
+
+department.groupBy('name');
+
+var names = [];
+
+var ids = [];
+
+var encodedQuery = '';
+
+ 
+
+department.query();
+
+ 
+
+while(department.next()){
+
+ 
+
+  var temp = new GlideRecord('cmn_department');
+
+        temp.get('name',department.name);
+
+ 
+
+        if(temp.name){
+
+ 
+
+  names.push(new String(temp.name));
+
+  ids.push(new String(temp.sys_id));
+
+ 
+
+  if(encodedQuery == '')
+
+  encodedQuery = 'sys_id!=' + temp.sys_id.toString();
+
+  else
+
+  encodedQuery += '^sys_id!=' + temp.sys_id.toString();
+
+ 
+
+  }
+
+}
+
+ 
+
+var column = new GlideRecord('sys_dictionary');
+
+column.addEncodedQuery('reference=cmn_department');
+
+column.query();
+
+ 
+
+while(column.next()){
+
+ 
+
+  for(var i = 0; i < names.length; i++){
+
+ 
+
+      var table = new GlideRecord(column.name);
+
+      table.addEncodedQuery(column.element + 'ISNOTEMPTY^' + column.element + '.name=' + names[i]);
+
+      table.query();
+
+ 
+
+      while(table.next()){
+
+ 
+
+          table.setValue(column.element, ids[i]);
+
+          table.update();
+
+ 
+
+      }
+
+  }
+
+ 
+
+}
+
+ 
+
+var depart2 = new GlideRecord('cmn_department');
+
+depart2.addEncodedQuery(encodedQuery);
+
+depart2.deleteMultiple();
+
+ 
+
+Obviously you'd want to replace any mention of "cmn_department" to be whatever table you're cleaning, but it should work in almost any situation. Please let me know if you have a better way of accomplishing this, preferably in a way that doesn't require a background script.
