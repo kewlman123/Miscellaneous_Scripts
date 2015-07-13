@@ -1,0 +1,6 @@
+//to move a column to the parent table
+//run in a background script
+
+
+GlideDBUtil.promoteColumn('cmdb_ci_server', 'cmdb_ci', 'u_wsus_category', true);
+
