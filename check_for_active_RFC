@@ -1,0 +1,11 @@
+//from server build, checks for and active approved RFC before the CI can be created
+
+function onSubmit() {
+var active = g_form.getValue('parent.active');
+var approved = g_form.getValue('parent.approval');
+  if (active == 'false' || approved != "approved"){
+    alert('Either an RFC is not listed as the parent, or the Parent RFC is Closed/Not Approved.  \nA Server Build ticket must be opened from an active RFC.');
+	return false;
+  }
+}
+
