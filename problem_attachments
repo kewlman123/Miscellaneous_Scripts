@@ -1,0 +1,18 @@
+
+// create relationship: system definitions / relationships
+// add related items to the change form
+
+Name: Problem Attachments
+
+var qc = current.addQuery('table_sys_id', parent.sys_id);
+qc.addOrCondition('table_sys_id', parent.u_problem.sys_id);
+current.addNotNullQuery('table_sys_id');
+
+
+Applies to table: Change Request
+
+Queries from table: Attachment
+
+
+
+
