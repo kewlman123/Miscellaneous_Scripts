@@ -1,0 +1,13 @@
+
+function t(){
+var x = prompt('test');
+g_form.setValue('work_notes', x);
+g_form.save()
+}
+
+
+function onSubmit() {
+  var action = g_form.getActionName();
+  alert('You pressed ' + action);
+}
+
