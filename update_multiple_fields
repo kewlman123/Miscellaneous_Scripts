@@ -1,0 +1,11 @@
+
+GlideMultipleUpdate
+
+When you absolutely, positively have to change every record in the table, accept no substitutes.
+
+var mu = new GlideMultipleUpdate(table_name);  
+mu.addQuery('field_name', value);  
+mu.setValue('field_name',  value);  
+mu.execute();  
+ 
+This will update all records that follow the query set.  It is very fast, does not touch any system fields (sys_updated_on, sys_updated_by, etc.) and does not run any business rules, so its usefulness is limited to just that.  If you have to update 600k records, and you do not care that the system fields are not updated, use this.
