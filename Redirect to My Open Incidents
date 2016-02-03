@@ -1,0 +1,17 @@
+
+
+Record Producer: Redirect to "My Open Incidents" once it's submitted.
+producer.redirect = 'incident_list.do?sysparm_query=caller_id%3Djavascript%3Ags.getUserID()';
+
+
+
+
+
+
+
+
+
+
+
+
+
